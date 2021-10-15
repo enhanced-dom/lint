@@ -1,0 +1,1 @@
+Extensible lint & git configurations for typescript & react & (s/p)css
