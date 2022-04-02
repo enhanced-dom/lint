@@ -32,16 +32,6 @@ export const eslintConfigFactory = ({ plugins = [], configs = [], resolver, rule
     rules: {
       /* ====== prettier ===== */
       'prettier/prettier': ['error'],
-      // 'max-line-length': [true, 140],
-      // align: [false],
-      // semicolon: [true, 'never'],
-      // 'trailing-comma': [
-      //   true,
-      //   {
-      //     multiline: false,
-      //     singleline: false
-      //   }
-      // ],
       /* ====== import ===== */      
       'import/prefer-default-export': [0],
       'import/order': ['error', {
@@ -73,7 +63,11 @@ export const eslintConfigFactory = ({ plugins = [], configs = [], resolver, rule
           "selector": "memberLike",
           "modifiers": ["private"],
           "format": ["camelCase"],
-          "leadingUnderscore": "require"
+          "prefix": ["_", "$"]
+        },
+        {
+          "selector": "memberLike",
+          "format": ["camelCase", "UPPER_CASE"]
         },
         {
           "selector": "typeLike",

@@ -3,7 +3,7 @@ export const prettierConfigFactory = (config = {} as Record<string, any>) => {
     printWidth: 140,
     singleQuote: true,
     semi: false,
-    jsxBracketSameLine: false,
+    bracketSameLine: false,
     trailingComma: "all",
     ...config
   }

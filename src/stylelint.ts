@@ -11,11 +11,14 @@ export const stylelintConfigFactory = ({ rules = {} as Record<string, any>, conf
           ignore: ['stylelint-commands', 'after-comment']
         }
       ],
-      "selector-pseudo-class-no-unknown": [true, { "ignorePseudoClasses": ["local", "global"] }],
+      "selector-pseudo-class-no-unknown": [true, { "ignorePseudoClasses": ["local", "global", "export"] }],
       "at-rule-no-unknown": [true, { "ignoreAtRules": ["extend", "inherit:", "mixin", "define-mixin", "if", "else"] }],
       'selector-class-pattern': '^[a-z0-9]+(-[a-z0-9]+)*$',
-      'max-empty-lines': 1,
-      'unit-whitelist': ['vh', 'vw', 'fr', 'rem', '%', 's', 'deg', 'ms'],
+      'max-empty-lines': null, // prettier will take care of this
+      'max-line-length': null, // prettier will take care of this
+      "declaration-block-no-redundant-longhand-properties": null,
+      'unit-allowed-list': ['vh', 'vw', 'fr', 'rem', '%', 's', 'deg', 'ms'],
+      'property-no-unknown': [true, { "ignoreProperties": [/^variables_/] }],
       ...rules
     }
   }
