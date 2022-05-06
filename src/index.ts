@@ -1,4 +1,3 @@
-export * from './husky'
 export * from './lint-staged'
 export * from './prettier'
 export * from './eslint'
