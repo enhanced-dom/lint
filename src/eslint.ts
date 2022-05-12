@@ -51,8 +51,12 @@ export const eslintConfigFactory = ({ plugins = [], configs = [], resolver, rule
           "format": ["camelCase"]
         },
         {
+          "selector": "function",
+          "format": ["PascalCase", "camelCase"]
+        },
+        {
           "selector": "variable",
-          "format": ["camelCase", "UPPER_CASE"]
+          "format": ["camelCase", "UPPER_CASE", "PascalCase"]
         },
         {
           "selector": "parameter",
@@ -67,7 +71,12 @@ export const eslintConfigFactory = ({ plugins = [], configs = [], resolver, rule
         },
         {
           "selector": "memberLike",
-          "format": ["camelCase", "UPPER_CASE"]
+          "modifiers": ["static"],
+          "format": ["camelCase", "PascalCase"]
+        },
+        {
+          "selector": "memberLike",
+          "format": ["camelCase", "UPPER_CASE", "PascalCase"]
         },
         {
           "selector": "typeLike",
@@ -77,6 +86,7 @@ export const eslintConfigFactory = ({ plugins = [], configs = [], resolver, rule
       /* ====== typing ===== */
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",
+      "@typescript-eslint/ban-ts-comment": "off",
       /* ====== unused & declared symbols ===== */  
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": ["error"],
