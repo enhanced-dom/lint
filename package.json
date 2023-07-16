@@ -1,6 +1,6 @@
 {
   "name": "@enhanced-dom/lint",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Helpers for linting & git integration",
   "keywords": [],
   "repository": "https://github.com/enhanced-dom/lint.git",
@@ -46,6 +46,6 @@
   },
   "engines": {
     "node": ">=14.17.0",
-    "npm": ">=8.0.0"
+    "npm": ">=9.0.0"
   }
 }

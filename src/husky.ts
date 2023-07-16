@@ -19,8 +19,6 @@ if (fs.existsSync(fullHuskyHooksPath)) {
 fs.mkdirSync(fullHuskyHooksPath)
 install(fullHuskyHooksPath)
 add(fullHuskyPreCommitPath,'echo "executing git pre-commit hook via husky"')
-add(fullHuskyPreCommitPath, 'binpath=`npm bin`')
-add(fullHuskyPreCommitPath, 'currentpath=`pwd`')
-add(fullHuskyPreCommitPath, '.${binpath#"$currentpath"}/lint-staged -r')
+add(fullHuskyPreCommitPath, 'npx lint-staged -r')
 const homeDir = os.homedir();
 fs.writeFileSync(path.join(homeDir, '.huskyrc'), `export PATH=${process.env.PATH}`)
