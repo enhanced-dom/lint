@@ -71,6 +71,12 @@ export const eslintConfigFactory = ({ plugins = [], configs = [], resolver, rule
         },
         {
           "selector": "memberLike",
+          "modifiers": ["protected"],
+          "format": ["camelCase"],
+          "prefix": ["_", "$"]
+        },
+        {
+          "selector": "memberLike",
           "modifiers": ["static"],
           "format": ["camelCase", "PascalCase"]
         },
