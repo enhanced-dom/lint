@@ -1,114 +1,224 @@
-import {Linter} from 'eslint'
+import { Linter } from 'eslint'
+import globals from 'globals'
+import * as typescriptParser from '@typescript-eslint/parser'
+import typescriptPlugin from '@typescript-eslint/eslint-plugin'
+import * as importPlugin from 'eslint-plugin-import'
+import reactPlugin from 'eslint-plugin-react'
+import reactHooksPlugin from 'eslint-plugin-react-hooks'
+import jsxA11yPlugin from 'eslint-plugin-jsx-a11y'
+import prettierPlugin from 'eslint-plugin-prettier'
+import prettierConfig from 'eslint-config-prettier'
+import eslintDefault from '@eslint/js'
 
-export const eslintConfigFactory = ({ plugins = [], configs = [], resolver, rules = {}, ignore }: {plugins?: string[]; configs?: string[]; resolver?: Record<string, any>; rules?: Linter.RulesRecord; ignore?: string[]} = {}) => {
-  return {
-    ignorePatterns: ignore,
-    extends: [
-      'eslint:recommended',
-      'plugin:@typescript-eslint/eslint-recommended',
-      'plugin:@typescript-eslint/recommended',
-      'plugin:react/recommended',
-      'plugin:jsx-a11y/recommended',
-      'plugin:react-hooks/recommended',
-      'prettier',
-      ...configs
-    ],
-    plugins: [
-      '@typescript-eslint',
-      'import',
-      'react',
-      'react-hooks',
-      'jsx-a11y',
-      'prettier',
-      ...plugins
-    ],
-    parser: '@typescript-eslint/parser',
-    settings: {
-      "import/resolver": resolver,
-      react: {
-        version: "detect"
-      },
-    },
-    rules: {
-      /* ====== prettier ===== */
-      'prettier/prettier': ['error'],
-      /* ====== import ===== */      
-      'import/prefer-default-export': [0],
-      'import/order': ['error', {
-        'newlines-between': 'always',
-        groups: [
-          ['builtin', 'external'],
-          'internal',
-          ['parent', 'sibling', 'index']
-        ]
-      }],
-      /* ====== naming ===== */   
-      camelcase: 'off',
-      '@typescript-eslint/naming-convention': [
-        "error",
-        {
-          "selector": "default",
-          "format": ["camelCase"]
-        },
-        {
-          "selector": "function",
-          "format": ["PascalCase", "camelCase"]
-        },
-        {
-          "selector": "variable",
-          "format": ["camelCase", "UPPER_CASE", "PascalCase"]
-        },
-        {
-          "selector": "parameter",
-          "format": ["camelCase", "PascalCase"],
-          "leadingUnderscore": "allow"
-        },
-        {
-          "selector": "memberLike",
-          "modifiers": ["private"],
-          "format": ["camelCase"],
-          "prefix": ["_", "$"]
-        },
-        {
-          "selector": "memberLike",
-          "modifiers": ["protected"],
-          "format": ["camelCase"],
-          "prefix": ["_", "$"]
-        },
-        {
-          "selector": "memberLike",
-          "modifiers": ["static"],
-          "format": ["camelCase", "PascalCase"]
-        },
-        {
-          "selector": "memberLike",
-          "format": ["camelCase", "UPPER_CASE", "PascalCase"]
-        },
-        {
-          "selector": "typeLike",
-          "format": ["PascalCase"]
+// seems in one of the versions of globals, the keys have some spaces, which causes eslint's config parser to complain
+const sanitizeGlobals = <T extends Record<string, any>>(globalsObj: T) => {
+  return Object.keys(globalsObj).reduce((acc, k) => ({...acc, [k.trim()]: globalsObj[k]}), {} as T)
+}
+
+export const eslintConfigFactory = ({ include = ['**/*.js', '**/*.ts', '**/*.tsx'], plugins = {}, configs = [], resolver, rules = {}, ignore, env = ["browser"] }: {plugins?: Record<string, any>; configs?: Linter.Config[]; resolver?: Record<string, any>; rules?: Linter.RulesRecord; ignore?: string[]; include?: string[]; env?: string[]} = {} ) => {
+  return [
+      {
+        files: include,
+        ignores: ignore,
+        rules: {
+          ...eslintDefault.configs.recommended.rules,
+          camelcase: 'off',
+          "no-unused-vars": "off",
+          "no-unused-expressions": "off",
+          "no-duplicate-imports": "off",
+          "no-use-before-define": "off",
+          "no-shadow": "off",
+          "no-empty": ["error", {"allowEmptyCatch": true}],
         }
-      ],
-      /* ====== typing ===== */
-      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/explicit-module-boundary-types": "off",
-      "@typescript-eslint/ban-ts-comment": "off",
-      /* ====== unused & declared symbols ===== */  
-      "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": ["error"],
-      "no-unused-expressions": "off",
-      "@typescript-eslint/no-unused-expressions": ["error"],
-      "no-duplicate-imports": "off",
-      "@typescript-eslint/no-duplicate-imports": ["error"],
-      "no-use-before-define": "off",
-      "@typescript-eslint/no-use-before-define": ["error"],
-      "no-shadow": "off",
-      "@typescript-eslint/no-shadow": ["error"],
-      "no-empty": ["error", {"allowEmptyCatch": true}],
-      /* ====== react ===== */ 
-      "react/prop-types" : "off",
-      "react/jsx-filename-extension": [ "warn", {"extensions": [".tsx"]} ],
-      ...rules
-    }
-  }
+      },
+      {
+        files: include,
+        ignores: ignore,
+        plugins: { '@typescript-eslint': typescriptPlugin },
+        rules: {
+          ...typescriptPlugin.configs.recommended.rules,
+          '@typescript-eslint/naming-convention': [
+            "error",
+            {
+              "selector": "default",
+              "format": ["camelCase"]
+            },
+            {
+              "selector": "function",
+              "format": ["PascalCase", "camelCase"]
+            },
+            {
+              "selector": "variable",
+              "format": ["camelCase", "UPPER_CASE", "PascalCase"]
+            },
+            {
+              "selector": "parameter",
+              "format": ["camelCase", "PascalCase"],
+              "leadingUnderscore": "allow"
+            },
+            {
+              "selector": "memberLike",
+              "modifiers": ["#private"],
+              "format": ["camelCase"],
+              "leadingUnderscore": "forbid"
+            },
+            {
+              "selector": "memberLike",
+              "modifiers": ["private"],
+              "format": ["camelCase"],
+              "prefix": ["_", "$"]
+            },
+            {
+                "selector": "memberLike",
+                "modifiers": ["protected"],
+                "format": ["camelCase"],
+                "prefix": ["_", "$"]
+            },
+            {
+              "selector": "memberLike",
+              "modifiers": ["static"],
+              "format": ["camelCase", "PascalCase"]
+            },
+            {
+              "selector": "typeAlias",
+              "format": ["PascalCase"],
+              "custom": {
+                  "regex": "(Type|Props|Attributes)$",
+                  "match": true
+                }
+            },
+            {
+              "selector": "enum",
+              "format": ["PascalCase"]
+            },
+            {
+              "selector": "class",
+              "format": ["PascalCase"]
+            },
+            {
+              "selector": "enumMember",
+              "format": ["UPPER_CASE"]
+            },
+            {
+              "selector": "interface",
+              "format": ["PascalCase"],
+              "custom": {
+                "regex": "(^I)|(Props|Attributes)$",
+                "match": true
+              }
+            },
+            {
+              "selector": "import",
+              "format": ["camelCase", "PascalCase"],
+            }
+          ],
+          "@typescript-eslint/no-explicit-any": "off",
+          "@typescript-eslint/explicit-module-boundary-types": "off",
+          "@typescript-eslint/ban-ts-comment": "off",
+          "@typescript-eslint/no-unused-vars": ["error"],
+          "@typescript-eslint/no-unused-expressions": ["error"],
+          "@typescript-eslint/no-use-before-define": ["error"],
+          "@typescript-eslint/no-shadow": ["error"]  
+        },
+        languageOptions: {
+          parser: typescriptParser,
+          sourceType: "module"
+        }
+      },
+      {
+        files: include,
+        ignores: ignore,
+        plugins: { 
+          'react': reactPlugin, 
+          'react-hooks': reactHooksPlugin
+        },
+        rules: { 
+          ...reactPlugin.configs.recommended.rules, 
+          ...reactHooksPlugin.configs.recommended.rules,
+          "react/prop-types" : "off",
+          "react/jsx-filename-extension": [ "warn", {"extensions": [".tsx"]} ]
+        },
+        languageOptions: {
+          parserOptions: {
+            ecmaFeatures: {
+               jsx: true
+            }
+         }
+        },
+        settings: {
+          react: {
+            version: "detect"
+          }
+        }
+      },
+      {
+        files: include,
+        ignores: ignore,
+        plugins: {
+          'jsx-a11y': jsxA11yPlugin
+        },
+        rules: jsxA11yPlugin.configs.recommended.rules,
+        languageOptions: {
+          parserOptions: {
+            ecmaFeatures: {
+               jsx: true
+            }
+         }
+        }
+      },
+      {
+        files: include,
+        ignores: ignore,
+        plugins: {
+          'prettier': prettierPlugin
+        },
+        rules: {
+          ...prettierConfig.rules,
+          'prettier/prettier': ['error']
+        }
+      },
+      {
+        files: include,
+        ignores: ignore,
+        plugins: {
+          'import': importPlugin
+        },
+        settings: {
+          "import/resolver": resolver ?? "typescript",
+          "import/parsers": {
+            "@typescript-eslint/parser": [".ts", ".tsx"],
+            "@babel/eslint-parser": [".js", ".jsx"]
+          },
+        },
+        rules: {
+          ...importPlugin.configs.recommended.rules,
+          'import/prefer-default-export': [0],
+          'import/order': ['error', {
+            'newlines-between': 'always',
+            groups: [
+              ['builtin', 'external'],
+              'internal',
+              ['parent', 'sibling', 'index']
+            ]
+          }]
+        },
+        languageOptions: {
+          sourceType: "module",
+          ecmaVersion: 2018,
+          parserOptions: {
+            requireConfigFile: false
+          }
+        }
+      },
+      ...configs,
+      {
+        files: include,
+        ignores: ignore,
+        languageOptions: {
+          globals: env.reduce((acc, envName) => ({...acc, ...sanitizeGlobals(globals[envName] ?? {})}), {}),
+        },
+        plugins,
+        rules
+      }
+  ]
 }

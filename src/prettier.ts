@@ -1,4 +1,6 @@
-export const prettierConfigFactory = (config = {} as Record<string, any>) => {
+import { type Config } from 'prettier'
+
+export const prettierConfigFactory = (config: Config = {}): Config => {
   return {
     printWidth: 140,
     singleQuote: true,

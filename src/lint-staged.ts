@@ -1,4 +1,6 @@
-export const lintStagedConfigFactory = ({ eslintExtensions = ['ts', 'tsx'] as string[], stylelintExtensions = ['pcss'] as string[]} = {}) => {
+import { type Config } from 'lint-staged'
+
+export const lintStagedConfigFactory = ({ eslintExtensions = ['ts', 'tsx'] as string[], stylelintExtensions = ['pcss'] as string[]} = {}): Config => {
   return {
     ...(eslintExtensions.length
       ? {
