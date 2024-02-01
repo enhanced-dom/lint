@@ -88,6 +88,10 @@ export const eslintConfigFactory = ({ include = ['**/*.js', '**/*.ts', '**/*.tsx
                 }
             },
             {
+              "selector": "typeParameter",
+              "format": ["PascalCase"],
+            },
+            {
               "selector": "enum",
               "format": ["PascalCase"]
             },
