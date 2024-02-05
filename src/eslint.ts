@@ -83,7 +83,7 @@ export const eslintConfigFactory = ({ include = ['**/*.js', '**/*.ts', '**/*.tsx
               "selector": "typeAlias",
               "format": ["PascalCase"],
               "custom": {
-                  "regex": "(Type|Props|Attributes)$",
+                  "regex": "(^I)|(Type|Props|Attributes)$",
                   "match": true
                 }
             },
