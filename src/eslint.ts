@@ -51,6 +51,11 @@ export const eslintConfigFactory = ({ include = ['**/*.js', '**/*.ts', '**/*.tsx
               "selector": "variable",
               "format": ["camelCase", "UPPER_CASE", "PascalCase"]
             },
+            // for named imports to work with the variable rule above
+            {
+              "selector": "objectLiteralProperty",
+              "format": ["camelCase", "UPPER_CASE", "PascalCase"]
+            },
             {
               "selector": "parameter",
               "format": ["camelCase", "PascalCase"],
