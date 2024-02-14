@@ -145,7 +145,8 @@ export const eslintConfigFactory = ({ include = ['**/*.js', '**/*.ts', '**/*.tsx
           ...reactPlugin.configs.recommended.rules, 
           ...reactHooksPlugin.configs.recommended.rules,
           "react/prop-types" : "off",
-          "react/jsx-filename-extension": [ "warn", {"extensions": [".tsx"]} ]
+          "react/jsx-filename-extension": [ "warn", {"extensions": [".tsx"]} ],
+          "react/react-in-jsx-scope": "off" // either tsc or babel plugin will take care of this
         },
         languageOptions: {
           parserOptions: {
