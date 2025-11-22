@@ -1,6 +1,6 @@
 {
   "name": "@enhanced-dom/lint",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Helpers for linting & git integration",
   "keywords": [],
   "repository": "https://github.com/enhanced-dom/lint.git",
@@ -26,6 +26,7 @@
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^16.5.0",
     "husky": "^8.0.3",
     "lint-staged": "^16.2.7",
     "prettier": "^3.6.2",
