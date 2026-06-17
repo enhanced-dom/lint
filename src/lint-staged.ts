@@ -5,7 +5,7 @@ export const lintStagedConfigFactory = ({ eslintExtensions = ['ts', 'tsx'] as st
     ...(eslintExtensions.length
       ? {
           [eslintExtensions.length > 1 ? `*.{${eslintExtensions.join(',')}}` : `*.${eslintExtensions[0]}`]: [
-            'eslint --fix --config eslint.config.js',
+            'eslint --fix --config eslint.config.cjs',
             'git update-index --again'
           ]
         }
@@ -13,7 +13,7 @@ export const lintStagedConfigFactory = ({ eslintExtensions = ['ts', 'tsx'] as st
     ...(stylelintExtensions.length
       ? {
           [stylelintExtensions.length > 1 ? `*.{${stylelintExtensions.join(',')}}` : `*.${stylelintExtensions[0]}`]: [
-            'stylelint --fix --config stylelint.config.js',
+            'stylelint --fix --config stylelint.config.cjs',
             'git update-index --again'
           ]
         }

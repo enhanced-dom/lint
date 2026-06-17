@@ -225,7 +225,7 @@ export const eslintConfigFactory = ({ include = ['**/*.js', '**/*.ts', '**/*.tsx
         files: include,
         ignores: ignore,
         languageOptions: {
-          globals: env.reduce((acc, envName) => ({...acc, ...sanitizeGlobals(globals[envName] ?? {})}), {}),
+          globals: env.reduce((acc, envName) => ({...acc, ...sanitizeGlobals((globals as Record<string, any>)[envName] ?? {})}), {}),
         },
         plugins,
         rules
