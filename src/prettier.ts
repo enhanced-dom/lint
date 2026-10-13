@@ -6,7 +6,7 @@ export const prettierConfigFactory = (config: Config = {}): Config => {
     singleQuote: true,
     semi: false,
     bracketSameLine: false,
-    trailingComma: "all",
-    ...config
+    trailingComma: 'all',
+    ...config,
   }
 }

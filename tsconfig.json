@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
-    "module": "commonjs",
-    "target": "es2018",
+    "moduleResolution": "bundler",
+    "module": "esnext",
+    "target": "es2025",
+    "types": ["node"],
+    "strict": true,
     "declaration": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -10,11 +12,11 @@
     "outDir": "dist",
     "noUncheckedIndexedAccess": true,
     "preserveConstEnums" : true,
-    "paths": {
-      "@typescript-eslint/parser": ["./node_modules/@typescript-eslint/parser/dist"]
-    }
+    "inlineSourceMap": true,
+    "inlineSources": true
   },
   "include": [
     "src/**/*.ts",
+    "src/**/*.tsx",
   ]
 }
